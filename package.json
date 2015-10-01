@@ -10,6 +10,7 @@
     "yeoman-generator"
   ],
   "author": "Jason L Perry",
+  "repository": "ambethia/generator-ambethia",
   "license": "MIT",
   "dependencies": {
     "yeoman-generator": "^0.20.3"

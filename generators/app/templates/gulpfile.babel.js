@@ -3,7 +3,6 @@ import babelify from 'babelify';
 import browserify from 'browserify';
 import source from 'vinyl-source-stream';
 import browserSync from 'browser-sync';
-import plumber from 'gulp-plumber';
 import sass from 'gulp-sass';
 <% if (includeJade) { -%>
 import jade from 'gulp-jade';
@@ -35,7 +34,10 @@ gulp.task('script', () => {
       extension: ['.js'],
       debug: true
     }).transform(babelify).bundle()
-    .pipe(plumber())
+    .on('error', function(err) {
+      console.log(err.toString());
+      this.emit("end");
+    })
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('dist'))
     .pipe(sync.reload({

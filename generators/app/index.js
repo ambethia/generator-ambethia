@@ -75,7 +75,7 @@ module.exports = generators.Base.extend({
       }
     );
 
-    this.npmInstall(['normalize.css', 'jquery']);
+    this.npmInstall(['normalize.css', 'jquery'], { 'save': true });
   },
 
   end: function() {

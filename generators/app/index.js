@@ -3,8 +3,8 @@ var generators = require('yeoman-generator');
 module.exports = generators.Base.extend({
   constructor: function() {
     generators.Base.apply(this, arguments);
+    // TODO: Convert this to a prompt in the UI.
     this.option('jade');
-
     this.includeJade = this.options.jade;
   },
 
@@ -55,15 +55,22 @@ module.exports = generators.Base.extend({
   },
 
   install: function() {
+    // TODO: Prompt for gh-pages
     var devDependencies = [
       'babel-core',
       'babelify',
       'browser-sync',
       'browserify',
       'gulp',
-      'gulp-gh-pages',
+      'gh-pages',
       'gulp-sass',
       'vinyl-source-stream'
+    ];
+
+    // TODO: Prompt for normalize and jquery
+    dependencies = [
+      'normalize.css',
+      'jquery'
     ];
 
     if (this.includeJade)
@@ -75,10 +82,14 @@ module.exports = generators.Base.extend({
       }
     );
 
-    this.npmInstall(['normalize.css', 'jquery'], { 'save': true });
+    this.npmInstall(
+      dependencies, {
+        'save': true
+      });
   },
 
   end: function() {
+    // TODO: Prompt to do this!
     this.spawnCommandSync('git', ['init']);
     this.spawnCommandSync('git', ['add', '--all']);
     this.spawnCommandSync('git', ['commit', '-m', '"Init"']);

@@ -59,7 +59,7 @@ gulp.task('styles', () => {
 gulp.task('build', ['html', 'script', 'styles']);
 
 gulp.task("deploy", ["build"], () => {
-  ghPages.publish("dist"));
+  ghPages.publish("dist");
 });
 
 gulp.task('serve', ['build'], () => {

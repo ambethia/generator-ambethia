@@ -3,51 +3,48 @@ var generators = require('yeoman-generator');
 module.exports = generators.Base.extend({
   constructor: function() {
     generators.Base.apply(this, arguments);
-    // TODO: Convert this to a prompt in the UI.
-    this.option('jade');
-    this.includeJade = this.options.jade;
   },
 
   writing: {
-    gulpfile: function() {
-      this.fs.copyTpl(
-        this.templatePath('gulpfile.babel.js'),
-        this.destinationPath('gulpfile.babel.js'), {
-          includeJade: this.includeJade
-        }
+    webpack: function() {
+      this.fs.copy(
+        this.templatePath('webpack.config.babel.js'),
+        this.destinationPath('webpack.config.babel.js')
       );
     },
     packageJSON: function() {
-      this.fs.copyTpl(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json'), {
-          includeJade: this.includeJade
-        }
+      this.fs.copy(
+        this.templatePath('package.json'),
+        this.destinationPath('package.json')
       );
     },
-    git: function() {
+    dotfiles: function() {
       this.fs.copy(
-        this.templatePath('gitignore'),
-        this.destinationPath('.gitignore')
+        this.templatePath('.*'),
+        this.destinationRoot()
       );
     },
     styles: function() {
       this.fs.copy(
-        this.templatePath('screen.sass'),
-        this.destinationPath('src/styles/screen.sass')
+        this.templatePath('*.scss'),
+        this.destinationPath('src/styles')
       );
     },
     scripts: function() {
       this.fs.copy(
-        this.templatePath('main.js'),
-        this.destinationPath('src/scripts/main.js')
+        this.templatePath('index.jsx'),
+        this.destinationPath('src/index.jsx')
+      );
+
+      this.fs.copy(
+        this.templatePath('App.jsx'),
+        this.destinationPath('src/components/App.jsx')
       );
     },
     html: function() {
-      var ext = this.includeJade ? 'jade' : 'html';
       this.fs.copyTpl(
-        this.templatePath('index.' + ext),
-        this.destinationPath('src/index.' + ext), {
+        this.templatePath('index.tpl.html'),
+        this.destinationPath('src/index.tpl.html'), {
           title: this.appname
         }
       );
@@ -55,26 +52,35 @@ module.exports = generators.Base.extend({
   },
 
   install: function() {
-    // TODO: Prompt for gh-pages
     var devDependencies = [
+      'autoprefixer',
+      'babel',
       'babel-core',
-      'babelify',
-      'browser-sync',
-      'browserify',
-      'gulp',
-      'gh-pages',
-      'gulp-sass',
-      'vinyl-source-stream'
+      'babel-eslint',
+      'babel-loader',
+      'babel-plugin-lodash',
+      'babel-plugin-react-transform',
+      'css-loader',
+      'eslint',
+      'eslint-plugin-react',
+      'extract-text-webpack-plugin',
+      'file-loader',
+      'html-webpack-plugin',
+      'postcss-loader',
+      'react-transform-hmr',
+      'sass-loader',
+      'style-loader',
+      'url-loader',
+      'webpack',
+      'webpack-dev-server',
+      'webpack-merge'
     ];
 
-    // TODO: Prompt for normalize and jquery
     dependencies = [
-      'normalize.css',
-      'jquery'
+      'lodash',
+      'react',
+      'react-dom'
     ];
-
-    if (this.includeJade)
-      devDependencies.push('gulp-jade');
 
     this.npmInstall(
       devDependencies, {
@@ -85,11 +91,11 @@ module.exports = generators.Base.extend({
     this.npmInstall(
       dependencies, {
         'save': true
-      });
+      }
+    );
   },
 
   end: function() {
-    // TODO: Prompt to do this!
     this.spawnCommandSync('git', ['init']);
     this.spawnCommandSync('git', ['add', '--all']);
     this.spawnCommandSync('git', ['commit', '-m', '"Init"']);

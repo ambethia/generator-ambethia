@@ -1,17 +1,17 @@
 {
   "name": "generator-ambethia",
-  "version": "0.0.1",
-  "description": "My perosnal Yeoman Generator",
+  "private": true,
+  "version": "0.0.2",
   "files": [
     "app",
     "router"
   ],
-  "keywords": [
-    "yeoman-generator"
-  ],
   "author": "Jason L Perry",
   "repository": "ambethia/generator-ambethia",
   "license": "MIT",
+  "devDependencies": {
+    "eslint": "^1.7.3"
+  },
   "dependencies": {
     "yeoman-generator": "^0.20.3"
   }
